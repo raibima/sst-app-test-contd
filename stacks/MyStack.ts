@@ -14,6 +14,7 @@ import {
   SubnetType,
   Vpc,
 } from "aws-cdk-lib/aws-ec2";
+import {useProject} from "sst/project";
 
 const DATABASE_NAME = "delete_me_db";
 const DATABASE_USERNAME = "deletemedbuser";
@@ -78,6 +79,9 @@ export function AwesomeStack({stack, app}: StackContext) {
     environment: {
       REGION: app.region,
       SKIP_ENV_VALIDATION: "true",
+      SST_APP: app.name,
+      SST_STAGE: app.stage,
+      SST_SSM_PREFIX: useProject().config.ssmPrefix,
     },
     bind: [
       NEXTAUTH_SECRET,
