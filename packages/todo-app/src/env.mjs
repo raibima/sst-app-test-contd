@@ -42,7 +42,7 @@ const client = z.object({
 const processEnv = {
   DATABASE_URL: process.env.DATABASE_URL,
   // @ts-ignore
-  NODE_ENV: Config.NODE_ENV,
+  NODE_ENV: process.env.NODE_ENV,
   // @ts-ignore
   NEXTAUTH_SECRET: Config.NEXTAUTH_SECRET,
   // @ts-ignore
