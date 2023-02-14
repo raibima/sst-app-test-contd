@@ -72,6 +72,7 @@ export function AwesomeStack({stack, app}: StackContext) {
     path: "packages/todo-app/",
     environment: {
       REGION: app.region,
+      SKIP_ENV_VALIDATION: "true",
     },
   });
 
