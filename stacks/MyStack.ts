@@ -1,4 +1,4 @@
-import {StackContext, NextjsSite} from "sst/constructs";
+import {StackContext, NextjsSite, Config} from "sst/constructs";
 import {
   DatabaseInstance,
   DatabaseInstanceEngine,
@@ -68,12 +68,23 @@ export function AwesomeStack({stack, app}: StackContext) {
 
   db.connections.allowFromAnyIpv4(Port.tcp(5432));
 
+  let NEXTAUTH_SECRET = new Config.Secret(stack, "NEXTAUTH_SECRET");
+  let NEXTAUTH_URL = new Config.Secret(stack, "NEXTAUTH_URL");
+  let DISCORD_CLIENT_ID = new Config.Secret(stack, "DISCORD_CLIENT_ID");
+  let DISCORD_CLIENT_SECRET = new Config.Secret(stack, "DISCORD_CLIENT_SECRET");
+
   let site = new NextjsSite(stack, "NextjsApp", {
     path: "packages/todo-app/",
     environment: {
       REGION: app.region,
       SKIP_ENV_VALIDATION: "true",
     },
+    bind: [
+      NEXTAUTH_SECRET,
+      NEXTAUTH_URL,
+      DISCORD_CLIENT_ID,
+      DISCORD_CLIENT_SECRET,
+    ],
   });
 
   stack.addOutputs({

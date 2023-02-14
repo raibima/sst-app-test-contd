@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { z } from "zod";
+import { Config } from 'sst/node/config';
 
 /**
  * Specify your server-side environment variables schema here.
@@ -40,11 +41,16 @@ const client = z.object({
  */
 const processEnv = {
   DATABASE_URL: process.env.DATABASE_URL,
-  NODE_ENV: process.env.NODE_ENV,
-  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-  NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-  DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
-  DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+  // @ts-ignore
+  NODE_ENV: Config.NODE_ENV,
+  // @ts-ignore
+  NEXTAUTH_SECRET: Config.NEXTAUTH_SECRET,
+  // @ts-ignore
+  NEXTAUTH_URL: Config.NEXTAUTH_URL,
+  // @ts-ignore
+  DISCORD_CLIENT_ID: Config.DISCORD_CLIENT_ID,
+  // @ts-ignore
+  DISCORD_CLIENT_SECRET: Config.DISCORD_CLIENT_SECRET,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
