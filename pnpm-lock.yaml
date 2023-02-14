@@ -1,5 +1,10 @@
 lockfileVersion: 5.4
 
+patchedDependencies:
+  sst@2.0.23:
+    hash: nv3gtslb2nqrl43u5hdtxf3qri
+    path: patches/sst@2.0.23.patch
+
 importers:
 
   .:
