@@ -3,6 +3,7 @@ node_modules
 
 # sst
 .sst
+.sst.config.*.mjs
 .build
 
 # misc
@@ -10,3 +11,4 @@ node_modules
 
 # local env files
 .env*.local
+.open-next

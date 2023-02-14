@@ -1,4 +1,4 @@
-import {StackContext, NextjsSite, } from "sst/constructs";
+import {StackContext, NextjsSite} from "sst/constructs";
 import {
   DatabaseInstance,
   DatabaseInstanceEngine,
@@ -9,6 +9,7 @@ import {
   InstanceSize,
   InstanceType,
   IpAddresses,
+  IVpc,
   Port,
   SubnetType,
   Vpc,
@@ -20,22 +21,32 @@ const DATABASE_USERNAME = "deletemedbuser";
 export function AwesomeStack({stack, app}: StackContext) {
   app.setDefaultRemovalPolicy("destroy");
 
+  console.log("Stage name:", app.stageName);
+  console.log("Stage:", app.stage);
+
   // create vpc
-  let vpc = new Vpc(stack, "delete-me-vpc", {
-    ipAddresses: IpAddresses.cidr("10.0.0.0/16"),
-    subnetConfiguration: [
-      {
-        name: "Public",
-        subnetType: SubnetType.PUBLIC,
-        cidrMask: 24,
-      },
-      {
-        name: "Private",
-        subnetType: SubnetType.PRIVATE_ISOLATED,
-        cidrMask: 24,
-      },
-    ],
-  });
+  let vpc: IVpc;
+  if (app.stage === "prod") {
+    vpc = Vpc.fromLookup(stack, "delete-me-vpc", {
+      vpcId: "vpc-0414b7a840c3c6c62",
+    });
+  } else {
+    vpc = new Vpc(stack, "delete-me-vpc", {
+      ipAddresses: IpAddresses.cidr("10.0.0.0/16"),
+      subnetConfiguration: [
+        {
+          name: "Public",
+          subnetType: SubnetType.PUBLIC,
+          cidrMask: 24,
+        },
+        {
+          name: "Private",
+          subnetType: SubnetType.PRIVATE_ISOLATED,
+          cidrMask: 24,
+        },
+      ],
+    });
+  }
 
   // create RDS database instance (postgres)
   let db = new DatabaseInstance(stack, "delete-me-db", {
@@ -62,11 +73,6 @@ export function AwesomeStack({stack, app}: StackContext) {
     environment: {
       REGION: app.region,
     },
-    cdk: {
-      server: {
-        vpc,
-      }
-    }
   });
 
   stack.addOutputs({
